@@ -1,3 +1,4 @@
+### --- R Challange 2, Alvin Aziz, 06.04.2021 --- ###
 library(assertthat)
 
 # Calculate the population for every district for 2021 and name the new column einwohner_2021. The yearly increasing rate is 1.1%. Note: the data is based on a survey from 2019.
@@ -8,6 +9,29 @@ library(assertthat)
 # * Select bezirk and differenz
 # * Arrange the output in descending order.
 # * Calculate the sum of people who moved to Hamburg between 2019 and 2021 and store the result in the object hamburg_pop_increase and name the column differenz_sum
+
+bezirk <- c("Hamburg-Mitte", "Altona", "Eimsbüttel", "Hamburg-Nord", "Wandsbek", "Bergedorf", "Harburg")
+einwohner <- c(301543, 275264, 267051, 314593, 441012, 130260, 169426)
+bevoelkerungsdichte <- c(2121, 3534, 5362, 5443, 2990, 841, 1353) # per Kilometer squared
+bezirksamtsleiter <- c("Droßmann", "von Berg", "Gätgens", "Werner-Boelz", "Ritzenhoff", "Dornquast", "Fredenhagen")
+flaecheRaw <- c(142.2, 77.9, 49.8, 57.8, 147.5, 154.8, 125.2) # in Kilometers squared
+flaeche <- flaecheRaw > 100
+
+hamburg_df <- data.frame(bezirk, einwohner, bevoelkerungsdichte, bezirksamtsleiter, flaeche)
+
+hamburg_2021 <- hamburg_df %>% 
+  mutate(einwohner_2021 = round(einwohner * 1.011^2)) %>% 
+  mutate(differenz = einwohner_2021 - einwohner) %>% 
+  filter(differenz > 5000) %>% 
+  arrange(desc(differenz)) 
+  
+hamburg_pop_increase <- hamburg_2021 %>% 
+  summarise(differenz_sum = sum(differenz))
+  
+
+hamburg_2021 <- hamburg_2021 %>% 
+  select(bezirk, differenz)
+
 
 if(
   assert_that(
