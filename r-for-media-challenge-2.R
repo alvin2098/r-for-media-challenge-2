@@ -28,7 +28,6 @@ hamburg_2021 <- hamburg_df %>%
 hamburg_pop_increase <- hamburg_2021 %>% 
   summarise(differenz_sum = sum(differenz))
   
-
 hamburg_2021 <- hamburg_2021 %>% 
   select(bezirk, differenz)
 
